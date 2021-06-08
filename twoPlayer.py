@@ -36,6 +36,21 @@ def getGameStatus():
           return column
       else:
         previousColumn = column
+
+
+
+  # check for vertical wins
+  for column in range(7):
+    previousColumn = 0
+    streak = 1
+    for row in range(6):
+      if board[row][column] == previousColumn:
+        if board[row][column] != 0:
+          streak += 1
+        if streak == 4: 
+          return board[row][column]
+      else:
+        previousColumn = board[row][column]
       
 
 
