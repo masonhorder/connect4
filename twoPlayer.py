@@ -35,8 +35,8 @@ def getGameStatus():
         if streak == 4: 
           return column
       else:
+        streak = 1
         previousColumn = column
-
 
 
   # check for vertical wins
@@ -49,9 +49,68 @@ def getGameStatus():
           streak += 1
         if streak == 4: 
           return board[row][column]
+          
       else:
+        streak = 1
         previousColumn = board[row][column]
+
+
+  # check for diagonal wins
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row < 6:
+        canContinue = True
+        diagonalListRight.append(board[row][newColumn])
+        row+=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row < 6:
+        canContinue = True
+        diagonalListLeft.append(board[row][newColumn])
+        row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot != 0:
+            streak += 1
+          if streak == 4: 
+            return spot
+        else:
+          streak = 1
+          previousSpot = spot
       
+      return 0
+
+    
+    if detectList(diagonalListRight) == 1 or detectList(diagonalListRight) == 2:
+      print("diagonal win")
+      return detectList(diagonalListRight)
+    if detectList(diagonalListLeft) == 1 or detectList(diagonalListLeft) == 2:
+      print("diagonal win")
+      return detectList(diagonalListLeft)
+
+
+
+          
 
 
   return gameStatus #no one has won or tied
