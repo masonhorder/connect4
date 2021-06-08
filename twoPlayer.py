@@ -24,6 +24,19 @@ def getGameStatus():
     return gameStatus
 
   
+  # check for horizontal win
+  for row in board:
+    previousColumn = 0
+    streak = 1
+    for column in row:
+      if column == previousColumn:
+        if column != 0:
+          streak += 1
+        if streak == 4: 
+          return column
+      else:
+        previousColumn = column
+      
 
 
   return gameStatus #no one has won or tied
@@ -35,20 +48,25 @@ def placeMarker(player):
   gameStatus = getGameStatus() # check if the game has been won or tied
   
   if gameStatus == 1:
+    os.system('clear')
+    printBoard()
     print("congrats player 1 won!")
     return None
   
   elif gameStatus == 2:
+    os.system('clear')
+    printBoard()
     print("congrats player 2 won!")
     return None
   
   elif gameStatus == 3:
+    os.system('clear')
+    printBoard()
     print("tie :(")
     return None
 
 
 
-  # os.system('clear')
   printBoard()
   newPlayer = 0
   columnRaw = raw_input("Player " + str(player) + " choose a column(1-7): ")
