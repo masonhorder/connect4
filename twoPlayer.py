@@ -13,8 +13,8 @@ def getGameStatus():
   # check if game is tie
   hasZero = False
   for row in board:
-    for spot in row:
-      if spot == 0:
+    for column in row:
+      if column == 0:
         hasZero = True
   
   if hasZero == False:
@@ -46,27 +46,28 @@ def placeMarker(player):
 
   printBoard()
   newPlayer = 0
-  spot = int(input("Player " + str(player) + " choose a column(1-7): "))
+  column = int(input("Player " + str(player) + " choose a column(1-7): "))
 
   # find what height to place the marker at
-  def getHeightOfSpot(spot, height):
-    # print("current occupation: " + str(board[height][spot-1]))
-    if board[height][spot-1] == 0:
-      if height < 0:
+  def getHeightOfColumn(column, inputHeight):
+    if board[inputHeight][column] == 0:
+      if inputHeight < 0:
         return None # return an error if the marker cannot be place in this column
-      return height # return the coorect height to place marker
+      else:
+        print("returning height")
+        print(inputHeight)
+        return inputHeight # return the correct height to place marker
     else: 
-      getHeightOfSpot(spot, height-1) # move on to check the next available height
+      getHeightOfColumn(column, inputHeight-1) # move on to check the next available height
   
-  height = getHeightOfSpot(spot-1, 5) # start checking for the height
+  height = getHeightOfColumn(column-1, 5) # start checking for the height
 
   if height == None:
     print("Column Already Fully Occupied")
     placeMarker(player) # restart trun as current player
 
 
-  # print("location: " + str(height) + ", " + str(spot-1))
-  board[height][spot-1] = player # place the marker
+  board[height][column-1] = player # place the marker
 
 
   # find next player
