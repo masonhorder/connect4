@@ -1,3 +1,5 @@
+import os
+
 board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],]
 
 def printBoard():
@@ -44,24 +46,33 @@ def placeMarker(player):
     print("tie :(")
     return None
 
+
+
+  # os.system('clear')
   printBoard()
   newPlayer = 0
-  column = int(input("Player " + str(player) + " choose a column(1-7): "))
+  columnRaw = raw_input("Player " + str(player) + " choose a column(1-7): ")
+  column = 0
+  try:
+    if int(columnRaw) > 7:
+      placeMarker(player)
+    elif int(columnRaw) < 1:
+      placeMarker(player)
+    else:
+      column = int(columnRaw)
+  except:
+    placeMarker(player)
 
   # find what row to place the marker at
-  def getRowOfColumn(column, inputRow):
+  def getRow(column, inputRow):
+    if inputRow < 0:
+      return None # return an error if the marker cannot be place in this column
     if board[inputRow][column] == 0:
-      if inputRow < 0:
-        return None # return an error if the marker cannot be place in this column
-      else:
-        print("returning row")
-        print(inputRow)
-        return inputRow # return the correct row to place marker
+      return inputRow # return the correct row to place marker
     else: 
-      getRowOfColumn(column, inputRow-1) # move on to check the next available row
+      return getRow(column, inputRow-1) # move on to check the next available row
   
-  row = getRowOfColumn(column-1, 5) # start checking for the row
-  print(row)
+  row = getRow(column-1, 5) # start checking for the row
   if row == None:
     print("Column Already Fully Occupied")
     placeMarker(player) # restart trun as current player
