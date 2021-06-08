@@ -48,26 +48,26 @@ def placeMarker(player):
   newPlayer = 0
   column = int(input("Player " + str(player) + " choose a column(1-7): "))
 
-  # find what height to place the marker at
-  def getHeightOfColumn(column, inputHeight):
-    if board[inputHeight][column] == 0:
-      if inputHeight < 0:
+  # find what row to place the marker at
+  def getRowOfColumn(column, inputRow):
+    if board[inputRow][column] == 0:
+      if inputRow < 0:
         return None # return an error if the marker cannot be place in this column
       else:
-        print("returning height")
-        print(inputHeight)
-        return inputHeight # return the correct height to place marker
+        print("returning row")
+        print(inputRow)
+        return inputRow # return the correct row to place marker
     else: 
-      getHeightOfColumn(column, inputHeight-1) # move on to check the next available height
+      getRowOfColumn(column, inputRow-1) # move on to check the next available row
   
-  height = getHeightOfColumn(column-1, 5) # start checking for the height
-
-  if height == None:
+  row = getRowOfColumn(column-1, 5) # start checking for the row
+  print(row)
+  if row == None:
     print("Column Already Fully Occupied")
     placeMarker(player) # restart trun as current player
 
 
-  board[height][column-1] = player # place the marker
+  board[row][column-1] = player # place the marker
 
 
   # find next player
