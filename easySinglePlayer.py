@@ -13,9 +13,30 @@ def getRow(column, inputRow, inputBoard):
   else: 
     return getRow(column, inputRow-1, inputBoard) # move on to check the next available row
 
+
+
+
 def printBoard():
+  print("")
   for row in board:
-    print(row)
+    rowString = " \033[93m| "
+    for spot in row:
+      if spot == 0:
+        rowString += "\033[90mO "
+
+      elif spot == 1:
+        rowString += "\033[91m* "
+
+      elif spot == 2:
+        rowString += "\033[94m* "
+
+    rowString += "\033[93m| "
+      
+    print(rowString)
+  
+  print("\033[93m-------------------\033[0m")
+
+
 
 def getGameStatus(inputBoard):
   gameStatus = 0 # 0 = active game; 1 = player 1 wins; 2 = player 2 wins; 3 = tie game
@@ -166,19 +187,22 @@ def getScore(inputBoard, column):
   # -100 winnable 3
   return score
 
-def placeMarker(player):
+def placeMarker(player, message):
+  os.system('clear')
+  print(message)
+
   gameStatus = getGameStatus(board) # check if the game has been won or tied
   
   if gameStatus == 1:
     os.system('clear')
     printBoard()
-    print("congrats player 1 won!")
+    print("\033[91mcongrats player 1 won!\033[0m")
     return None
   
   elif gameStatus == 2:
     os.system('clear')
     printBoard()
-    print("congrats player 2 won!")
+    print("\033[94mcongrats player 2 won!\033[0m")
     return None
   
   elif gameStatus == 3:
@@ -197,9 +221,9 @@ def placeMarker(player):
     columnRaw = raw_input("Player " + str(player) + " choose a column(1-7): ")
     try:
       if int(columnRaw) > 7:
-        placeMarker(player)
+        placeMarker(player, "\033[91mColumn between 1 and 7\033[0m")
       elif int(columnRaw) < 1:
-        placeMarker(player)
+        placeMarker(player, "\033[91mColumn between 1 and 7\033[0m")
       else:
         column = int(columnRaw)
     except:
@@ -229,8 +253,7 @@ def placeMarker(player):
   
   row = getRow(column-1, 5, board) # start checking for the row
   if row == None:
-    print("Column Already Fully Occupied")
-    placeMarker(player) # restart trun as current player
+    placeMarker(player, "\033[91mColumn Already Fully Occupied, Go Again\033[0m") # restart trun as current player
 
 
   board[row][column-1] = player # place the marker
@@ -241,11 +264,10 @@ def placeMarker(player):
     newPlayer = 1
   else:
     newPlayer = 2
-  placeMarker(newPlayer)
+  placeMarker(newPlayer, "")
 
 
 
 
 
-print("Welcome to connect four, two player edition")
-placeMarker(1) # starts game
+placeMarker(1, "\033[93mWelcome to connect four, two player edition\033[0m") # starts game
