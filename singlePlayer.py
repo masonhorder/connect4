@@ -18,6 +18,7 @@ def getRow(column, inputRow, inputBoard):
 
 def printBoard():
   print("")
+  print("   1 2 3 4 5 6 7")
   for row in board:
     rowString = " \033[93m| "
     for spot in row:
