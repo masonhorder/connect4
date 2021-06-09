@@ -100,7 +100,7 @@ def getGameStatus():
       
       return 0
 
-    
+
     if detectList(diagonalListRight) == 1 or detectList(diagonalListRight) == 2:
       return detectList(diagonalListRight)
     if detectList(diagonalListLeft) == 1 or detectList(diagonalListLeft) == 2:
@@ -108,6 +108,58 @@ def getGameStatus():
 
 
 
+  # check for diagonal wins bottom up
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row > 0:
+        canContinue = True
+        diagonalListRight.append(board[row][newColumn])
+        row-=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+
+
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row > 0:
+        canContinue = True
+        diagonalListLeft.append(board[row][newColumn])
+        row-=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot != 0:
+            streak += 1
+          if streak == 4: 
+            return spot
+        else:
+          streak = 1
+          previousSpot = spot
+      
+      return 0
+
+
+    if detectList(diagonalListRight) == 1 or detectList(diagonalListRight) == 2:
+      return detectList(diagonalListRight)
+    if detectList(diagonalListLeft) == 1 or detectList(diagonalListLeft) == 2:
+      return detectList(diagonalListLeft)
           
 
 

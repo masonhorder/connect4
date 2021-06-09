@@ -87,7 +87,7 @@ def getGameStatus(inputBoard):
         previousColumn = inputBoard[row][column]
 
 
-  # check for diagonal wins
+  # check for diagonal wins top down
   for column in range(7):
     diagonalListRight = []
     diagonalListLeft = []
@@ -132,7 +132,7 @@ def getGameStatus(inputBoard):
       
       return 0
 
-    
+
     if detectList(diagonalListRight) == 1 or detectList(diagonalListRight) == 2:
       return detectList(diagonalListRight)
     if detectList(diagonalListLeft) == 1 or detectList(diagonalListLeft) == 2:
@@ -140,10 +140,65 @@ def getGameStatus(inputBoard):
 
 
 
+  # check for diagonal wins bottom up
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row > 0:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row-=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+
+
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row > 0:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row-=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot != 0:
+            streak += 1
+          if streak == 4: 
+            return spot
+        else:
+          streak = 1
+          previousSpot = spot
+      
+      return 0
+
+
+    if detectList(diagonalListRight) == 1 or detectList(diagonalListRight) == 2:
+      return detectList(diagonalListRight)
+    if detectList(diagonalListLeft) == 1 or detectList(diagonalListLeft) == 2:
+      return detectList(diagonalListLeft)
           
 
 
   return gameStatus #no one has won or tied
+        
+
+
 
 
 def botWinning(inputBoard):
@@ -202,7 +257,7 @@ def check3inARow(inputBoard):
         previousColumn = inputBoard[row][column]
 
 
-  # check for diagonal wins
+  # check for diagonal wins top down
   for column in range(7):
     diagonalListRight = []
     diagonalListLeft = []
@@ -227,6 +282,57 @@ def check3inARow(inputBoard):
         canContinue = True
         diagonalListLeft.append(inputBoard[row][newColumn])
         row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot == 2:
+            streak += 1
+          if streak == 3: 
+            return 10
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 6
+    if detectList(diagonalListLeft) == 2:
+      score += 6
+
+
+
+  # check for diagonal wins bottom up
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row > 0:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row-=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row > 0:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row-=1
         newColumn-=1
       else:
         canContinue = False
@@ -293,7 +399,7 @@ def check2inARow(inputBoard):
         previousColumn = inputBoard[row][column]
 
 
-  # check for diagonal wins
+  # check for diagonal wins top down
   for column in range(7):
     diagonalListRight = []
     diagonalListLeft = []
@@ -318,6 +424,57 @@ def check2inARow(inputBoard):
         canContinue = True
         diagonalListLeft.append(inputBoard[row][newColumn])
         row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot == 2:
+            streak += 1
+          if streak == 2: 
+            return 5
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 3
+    if detectList(diagonalListLeft) == 2:
+      score += 3
+
+
+
+  # check for diagonal wins bottom up
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row > 0:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row-=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row > 0:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row-=1
         newColumn-=1
       else:
         canContinue = False
@@ -390,7 +547,7 @@ def checkOpp3inARow(inputBoard):
         previousColumn = inputBoard[row][column]
 
 
-  # check for diagonal wins
+  # check for diagonal wins top down
   for column in range(7):
     diagonalListRight = []
     diagonalListLeft = []
@@ -415,6 +572,56 @@ def checkOpp3inARow(inputBoard):
         canContinue = True
         diagonalListLeft.append(inputBoard[row][newColumn])
         row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot == 1:
+            streak += 1
+          if streak == 3: 
+            return 2
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 8
+    if detectList(diagonalListLeft) == 2:
+      score += 8
+
+  
+  # check for diagonal wins bottom up
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row > 0:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row-=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row > 0:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row-=1
         newColumn-=1
       else:
         canContinue = False
@@ -480,7 +687,7 @@ def checkOpp2inARow(inputBoard):
         previousColumn = inputBoard[row][column]
 
 
-  # check for diagonal wins
+  # check for diagonal wins top down
   for column in range(7):
     diagonalListRight = []
     diagonalListLeft = []
@@ -505,6 +712,58 @@ def checkOpp2inARow(inputBoard):
         canContinue = True
         diagonalListLeft.append(inputBoard[row][newColumn])
         row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot == 1:
+            streak += 1
+          if streak == 2: 
+            return 2
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 2
+    if detectList(diagonalListLeft) == 2:
+      score += 2
+  
+
+
+
+  # check for diagonal wins bottom up
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row > 0:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row-=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 5
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row > 6:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row-=1
         newColumn-=1
       else:
         canContinue = False
