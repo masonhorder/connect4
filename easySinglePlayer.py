@@ -152,6 +152,12 @@ def botWinning(inputBoard):
   else:
     return 0
 
+def oppWinning(inputBoard):
+  if getGameStatus(inputBoard) == 1:
+    return 10000
+  else:
+    return 0
+
 def isCenterColumn(column):
   if column == 3:
     return 2
@@ -162,7 +168,7 @@ def isCenterColumn(column):
 
 
 
-def check3inARow(inputBoard, column):
+def check3inARow(inputBoard):
   score = 0 
   
   # check for horizontal win
@@ -171,10 +177,10 @@ def check3inARow(inputBoard, column):
     streak = 1
     for column in row:
       if column == previousColumn:
-        if column != 0:
+        if column  == 2:
           streak += 1
         if streak == 3: 
-          score += 6
+          score += 10
       else:
         streak = 1
         previousColumn = column
@@ -186,10 +192,10 @@ def check3inARow(inputBoard, column):
     streak = 1
     for row in range(6):
       if inputBoard[row][column] == previousColumn:
-        if inputBoard[row][column] != 0:
+        if inputBoard[row][column] == 2:
           streak += 1
         if streak == 3: 
-          score += 6
+          score += 10
           
       else:
         streak = 1
@@ -231,10 +237,10 @@ def check3inARow(inputBoard, column):
       streak = 1
       for spot in diagonalList:
         if spot == previousSpot:
-          if spot != 0:
+          if spot == 2:
             streak += 1
           if streak == 3: 
-            return 6
+            return 10
         else:
           streak = 1
           previousSpot = spot
@@ -253,21 +259,19 @@ def check3inARow(inputBoard, column):
   return score
 
 
-def check2inARow(inputBoard, column):
+def check2inARow(inputBoard):
   score = 0 
 
-
-  
   # check for horizontal win
   for row in inputBoard:
     previousColumn = 0
     streak = 1
     for column in row:
       if column == previousColumn:
-        if column != 0:
+        if column == 2:
           streak += 1
         if streak == 2: 
-          score += 3
+          score += 5
       else:
         streak = 1
         previousColumn = column
@@ -279,10 +283,10 @@ def check2inARow(inputBoard, column):
     streak = 1
     for row in range(6):
       if inputBoard[row][column] == previousColumn:
-        if inputBoard[row][column] != 0:
+        if inputBoard[row][column] == 2:
           streak += 1
         if streak == 2: 
-          score += 3
+          score += 5
           
       else:
         streak = 1
@@ -324,10 +328,10 @@ def check2inARow(inputBoard, column):
       streak = 1
       for spot in diagonalList:
         if spot == previousSpot:
-          if spot != 0:
+          if spot == 2:
             streak += 1
           if streak == 2: 
-            return 3
+            return 5
         else:
           streak = 1
           previousSpot = spot
@@ -344,28 +348,213 @@ def check2inARow(inputBoard, column):
 
   return score
 
+
+
+
+
+
+
+
+
+def checkOpp3inARow(inputBoard):
+  score = 0 
+  
+  # check for horizontal win
+  for row in inputBoard:
+    previousColumn = 0
+    streak = 1
+    for column in row:
+      if column == previousColumn:
+        if column == 1:
+          streak += 1
+        if streak == 3: 
+          score += 8
+      else:
+        streak = 1
+        previousColumn = column
+
+
+  # check for vertical wins
+  for column in range(7):
+    previousColumn = 0
+    streak = 1
+    for row in range(6):
+      if inputBoard[row][column] == previousColumn:
+        if inputBoard[row][column] == 1:
+          streak += 1
+        if streak == 3: 
+          score += 8
+          
+      else:
+        streak = 1
+        previousColumn = inputBoard[row][column]
+
+
+  # check for diagonal wins
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row < 6:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row+=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row < 6:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot == 1:
+            streak += 1
+          if streak == 3: 
+            return 2
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 8
+    if detectList(diagonalListLeft) == 2:
+      score += 8
+
+
+
+          
+
+  return score
+
+
+def checkOpp2inARow(inputBoard):
+  score = 0 
+
+  # check for horizontal win
+  for row in inputBoard:
+    previousColumn = 0
+    streak = 1
+    for column in row:
+      if column == previousColumn:
+        if column == 1:
+          streak += 1
+        if streak == 2: 
+          score += 2
+      else:
+        streak = 1
+        previousColumn = column
+
+
+  # check for vertical wins
+  for column in range(7):
+    previousColumn = 0
+    streak = 1
+    for row in range(6):
+      if inputBoard[row][column] == previousColumn:
+        if inputBoard[row][column] == 1:
+          streak += 1
+        if streak == 2: 
+          score += 2
+          
+      else:
+        streak = 1
+        previousColumn = inputBoard[row][column]
+
+
+  # check for diagonal wins
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row < 6:
+        canContinue = True
+        diagonalListRight.append(inputBoard[row][newColumn])
+        row+=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row < 6:
+        canContinue = True
+        diagonalListLeft.append(inputBoard[row][newColumn])
+        row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot == 1:
+            streak += 1
+          if streak == 2: 
+            return 2
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 2
+    if detectList(diagonalListLeft) == 2:
+      score += 2
+
+
+
+          
+
+  return score
+
 def getScore(inputBoard, column):
 
   score = 0
   newBoard = copy.deepcopy(inputBoard)
+  inverseNewBoard = copy.deepcopy(inputBoard)
   if getRow(column, 5, inputBoard) == None:
     return None
   else:
     newBoard[getRow(column, 5, inputBoard)][column] = 2
+    inverseNewBoard[getRow(column, 5, inputBoard)][column] = 1
   
 
-  # 10000 for winning
+
   score += botWinning(newBoard)
-
-  # 6 for a 3 in a row
-  score += check3inARow(newBoard, column)
-
-  # 3 for a 2 in a row
-  score += check2inARow(newBoard, column)
-
-  # 2 for a center column
-  # 1 inner 3 columns
+  score += check3inARow(newBoard)
+  score += check2inARow(newBoard)
   score += isCenterColumn(column)
+  score += checkOpp2inARow(inverseNewBoard)
+  score += checkOpp3inARow(inverseNewBoard)
+  score += oppWinning(inverseNewBoard)
 
 
   # -100 winnable 3
