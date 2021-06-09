@@ -160,6 +160,102 @@ def isCenterColumn(column):
   else:
     return 0
 
+
+
+def check3inARow(inputBoard, column):
+  score = 0 
+  newBoard = copy.deepcopy(inputBoard)
+  newBoard[getRow(column, 5, newBoard)][column] = 2
+
+  
+  # check for horizontal win
+  for row in newBoard:
+    previousColumn = 0
+    streak = 1
+    for column in row:
+      if column == previousColumn:
+        if column != 0:
+          streak += 1
+        if streak == 3: 
+          score += 6
+      else:
+        streak = 1
+        previousColumn = column
+
+
+  # check for vertical wins
+  for column in range(7):
+    previousColumn = 0
+    streak = 1
+    for row in range(6):
+      if newBoard[row][column] == previousColumn:
+        if newBoard[row][column] != 0:
+          streak += 1
+        if streak == 3: 
+          score += 6
+          
+      else:
+        streak = 1
+        previousColumn = newBoard[row][column]
+
+
+  # check for diagonal wins
+  for column in range(7):
+    diagonalListRight = []
+    diagonalListLeft = []
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn < 7 and row < 6:
+        canContinue = True
+        diagonalListRight.append(newBoard[row][newColumn])
+        row+=1
+        newColumn+=1
+      else:
+        canContinue = False
+
+    
+    row = 0
+    newColumn = column
+    canContinue = True
+    while canContinue:
+      if newColumn >= 0 and row < 6:
+        canContinue = True
+        diagonalListLeft.append(newBoard[row][newColumn])
+        row+=1
+        newColumn-=1
+      else:
+        canContinue = False
+
+    
+    def detectList(diagonalList):
+      previousSpot = 0
+      streak = 1
+      for spot in diagonalList:
+        if spot == previousSpot:
+          if spot != 0:
+            streak += 1
+          if streak == 3: 
+            return 6
+        else:
+          streak = 1
+          previousSpot = spot
+
+    
+    if detectList(diagonalListRight) == 2:
+      score += 6
+    if detectList(diagonalListLeft) == 2:
+      score += 6
+
+
+
+          
+
+  print(score)
+  return score
+
+
 def getScore(inputBoard, column):
 
   score = 0
@@ -174,7 +270,7 @@ def getScore(inputBoard, column):
   score += botWinning(inputBoard)
 
   # 6 for a 3 in a row
-  # score += 
+  score += check3inARow(inputBoard, column)
 
   # 3 for a 2 in a row
 
@@ -227,7 +323,7 @@ def placeMarker(player, message):
       else:
         column = int(columnRaw)
     except:
-      placeMarker(player)
+      placeMarker(player, "\033[91mError interpretting\033[0m")
 
 
   else:
@@ -270,4 +366,4 @@ def placeMarker(player, message):
 
 
 
-placeMarker(1, "\033[93mWelcome to connect four, two player edition\033[0m") # starts game
+placeMarker(1, "\033[93mWelcome to connect four, single player edition\033[0m") # starts game
