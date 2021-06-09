@@ -535,6 +535,20 @@ def checkOpp2inARow(inputBoard):
 
   return score
 
+
+
+def detectSetUp(inputBoard):
+  newBoard = copy.deepcopy(inputBoard)
+  for column in range(7):
+    if getRow(column, 5, inputBoard) != None:
+      newBoard[getRow(column, 5, inputBoard)][column] = 1
+      if getGameStatus(newBoard) == 1:
+        return -1000
+
+  return 0
+    
+
+
 def getScore(inputBoard, column):
 
   score = 0
@@ -555,6 +569,7 @@ def getScore(inputBoard, column):
   score += checkOpp2inARow(inverseNewBoard)
   score += checkOpp3inARow(inverseNewBoard)
   score += oppWinning(inverseNewBoard)
+  score += detectSetUp(inputBoard)
 
 
   # -100 winnable 3
@@ -575,7 +590,7 @@ def placeMarker(player, message):
   elif gameStatus == 2:
     os.system('clear')
     printBoard()
-    print("\033[94mcongrats player 2 won!\033[0m")
+    print("\033[94mLOSER!!! player 2 beat you!\033[0m")
     return None
   
   elif gameStatus == 3:
