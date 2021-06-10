@@ -873,6 +873,7 @@ def placeMarker(player, message):
       elif int(columnRaw) < 1:
         placeMarker(player, "\033[91mColumn between 1 and 7\033[0m")
       else:
+        print("attempt")
         column = int(columnRaw)
     except:
       placeMarker(player, "\033[91mError interpretting\033[0m")
