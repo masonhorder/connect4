@@ -4,6 +4,7 @@ import numpy as np
 from math import inf as infinity
 from datetime import datetime
 import time
+import random
 
 
 board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],]
@@ -118,9 +119,9 @@ def getStreak(inputBoard, streakLength, player):
 def getScore(inputBoard, column, inverseBoard):
   score = 0
 
-  if column == 3:
+  if column == 4:
     score += 3
-  elif column == 2 or column == 4:
+  elif column == 3 or column == 5:
     score += 1
   
   # score is a win for bot or blocks opponent
@@ -293,7 +294,7 @@ def makeMove(player, message):
 
       return best
   
-    move = minimax(board, 2, 0, board, 6)
+    move = minimax(board, 2, 0, board, 3)
     endTime = time.time()
     print(endTime-startTime)
     # getDepth(board)
@@ -305,4 +306,4 @@ def makeMove(player, message):
   makeMove(nextPlayer(player), "")
   
 
-makeMove(1, "\033[93mWelcome to connect four, single player edition\033[0m")
+makeMove(random.randint(1,2), "\033[93mWelcome to connect four, single player edition\033[0m")
