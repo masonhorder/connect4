@@ -3,9 +3,8 @@ import copy
 import numpy as np
 from math import inf as infinity
 from datetime import datetime
-import sys, threading
-sys.setrecursionlimit(10**7) # max depth of recursion
-threading.stack_size(2**27) 
+import time
+
 
 board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],]
 
@@ -264,6 +263,7 @@ def makeMove(player, message):
 
   # bots turn to move
   if player == 2:
+    startTime = time.time()
     def minimax(inputBoard, player, column, inverseBoard, depth):
       if player == 2:
         best = [-1, -1, -infinity]
@@ -292,14 +292,16 @@ def makeMove(player, message):
               best = score
 
       return best
-    
-    move = minimax(board, 2, 0, board, getDepth(board))
+  
+    move = minimax(board, 2, 0, board, 6)
+    endTime = time.time()
+    print(endTime-startTime)
+    # getDepth(board)
     row = move[0]
     column = move[1]
 
 
   board[row][column] = player
-  print(datetime.now())
   makeMove(nextPlayer(player), "")
   
 
