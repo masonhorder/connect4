@@ -189,7 +189,7 @@ def getRow(column, inputRow, inputBoard):
 
 # get player 1 move location
 def askPlayerColumn():
-  rawColumn = raw_input("Choose a column: ")
+  rawColumn = input("Choose a column: ")
   try:
     if int(rawColumn) > 7:
       makeMove(1, "\033[91mColumn between 1 and 7\033[0m")

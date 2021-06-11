@@ -1,7 +1,11 @@
 import os
 import copy 
 import numpy as np
-
+from math import inf as infinity
+from datetime import datetime
+import sys, threading
+sys.setrecursionlimit(10**7) # max depth of recursion
+threading.stack_size(2**27) 
 
 board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],]
 
@@ -189,7 +193,7 @@ def getRow(column, inputRow, inputBoard):
 
 # get player 1 move location
 def askPlayerColumn():
-  rawColumn = raw_input("Choose a column: ")
+  rawColumn = input("Choose a column: ")
   try:
     if int(rawColumn) > 7:
       makeMove(1, "\033[91mColumn between 1 and 7\033[0m")
@@ -209,6 +213,14 @@ def nextPlayer(player):
     return 1
 
 
+def getDepth(inputBoard):
+  movesLeft = -1
+  for row in inputBoard:
+    for spot in row:
+      if spot == 0:
+        movesLeft +=1
+
+  return movesLeft
 
 
 #####################
@@ -216,8 +228,7 @@ def nextPlayer(player):
 #####################
 def makeMove(player, message):
 
-  # check if anyone is currently winning
-  os.system('clear')
+  # os.system('clear')
 
   print(message)
 
@@ -253,28 +264,43 @@ def makeMove(player, message):
 
   # bots turn to move
   if player == 2:
-    highestScore = -100000000000000000
-    highestScoreLocation = 0
-    for potentialColumn in range(7):
-      potentialRow = getRow(potentialColumn, 5, board)
-      if potentialRow != None:
-        newBoard = copy.deepcopy(board)
-        newBoard[potentialRow][potentialColumn] = 2
-        inverseBoard = copy.deepcopy(board)
-        inverseBoard[potentialRow][potentialColumn] = 1
+    def minimax(inputBoard, player, column, inverseBoard, depth):
+      if player == 2:
+        best = [-1, -1, -infinity]
+      else:
+        best = [-1, -1, +infinity]
+
+      if getGameStatus(inputBoard) != 0 or depth == 0:
+        score = getScore(inputBoard, column, inverseBoard)
+        return [-1, -1, score]
+
+      for potentialColumn in range(7):
+        potentialRow = getRow(potentialColumn, 5, inputBoard)
+        if potentialRow != None:
+          newBoard = copy.deepcopy(inputBoard)
+          newBoard[potentialRow][potentialColumn] = player
+          inverseBoard = copy.deepcopy(inputBoard)
+          inverseBoard[potentialRow][potentialColumn] = nextPlayer(player)
+          score = minimax(newBoard, nextPlayer(player), potentialColumn, inverseBoard, depth-1)
+          score[0], score[1] = potentialRow, potentialColumn
+
+          if player == 2:
+            if score[2] > best[2]:
+              best = score
+          else:
+            if score[2] < best[2]:
+              best = score
+
+      return best
+    
+    move = minimax(board, 2, 0, board, getDepth(board))
+    row = move[0]
+    column = move[1]
 
 
-        newScore = getScore(newBoard, potentialColumn, inverseBoard)
-        if newScore > highestScore:
-          highestScore = newScore
-          highestScoreLocation = potentialColumn
-    column = highestScoreLocation
-    row = getRow(highestScoreLocation, 5, board)
-
-        
-
-  
   board[row][column] = player
+  print(datetime.now())
   makeMove(nextPlayer(player), "")
+  
 
 makeMove(1, "\033[93mWelcome to connect four, single player edition\033[0m")
