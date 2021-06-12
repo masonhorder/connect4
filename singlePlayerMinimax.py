@@ -9,6 +9,7 @@ import random
 
 board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],]
 
+humanMoves = []
 
 # check to make sure the board is not full
 def isBoardFull(inputBoard):
@@ -126,16 +127,16 @@ def evaluateSection(section):
   score = 0
 
   if section.count(2) == 4: # bot winning
-    score += 100
+    score += 10000
 
   elif section.count(1) == 3 and section.count(0) == 1: # human being set up to win
-    score -= 25
+    score -= 20
 
   elif section.count(2) == 3 and section.count(0) == 1:
-    score += 5
+    score += 8
 
   elif section.count(2) == 2 and section.count(0) == 2:
-    score += 2
+    score += 3
 
   return score
 
@@ -256,7 +257,7 @@ def getDepth(inputBoard):
   return movesLeft
 
 
-def minimax(inputBoard, player, depth):
+def minimax(inputBoard, player, depth, alpha, beta):
   if player == 2:
     best = [None, None, -infinity]
   else:
@@ -276,17 +277,26 @@ def minimax(inputBoard, player, depth):
   for move in getValidMoves(inputBoard):
     newBoard = copy.deepcopy(inputBoard)
     newBoard[move[0]][move[1]] = player
-    score = minimax(newBoard, nextPlayer(player), depth-1)
+    score = minimax(newBoard, nextPlayer(player), depth-1, alpha, beta)
     score[0], score[1] = move[0], move[1]
 
     if player == 2:
       if score[2] > best[2]:
         best = score
+      alpha = max(alpha, score[2])
+      if alpha >= beta:
+        break
+
+
     else:
       if score[2] < best[2]:
         best = score
+      beta = min(beta, score[2])
+      if alpha >= beta:
+        break
 
   return best
+
 
 
 
@@ -297,9 +307,8 @@ def minimax(inputBoard, player, depth):
 def makeMove(player, message):
 
   # os.system('clear')
-
   print(message)
-
+  message = ""
   gameStatus = getGameStatus(board)
   if gameStatus == 1:
     os.system('clear')
@@ -329,22 +338,26 @@ def makeMove(player, message):
     # verify row is not full
     if row == None:
       makeMove(1, "\033[91mColumn Already Fully Occupied, Go Again\033[0m")
+    
+    humanMoves.append(column+1)
 
   # bots turn to move
   if player == 2:
     startTime = time.time()
   
-    move = minimax(board, 2, 5)
+    move = minimax(board, 2, 5, -infinity, infinity)
     endTime = time.time()
     print("time to make move(seconds):" + str(endTime-startTime))
     # getDepth(board)
     row = move[0]
     column = move[1]
+    message = "Bot went in column " + str(column)
 
 
   board[row][column] = player
-  makeMove(nextPlayer(player), "")
+  makeMove(nextPlayer(player), message)
   
 
 makeMove(1, "\033[93mWelcome to connect four, single player edition\033[0m")
-# random.randint(1,2)
+
+print("you played these moves: " + str(humanMoves))
