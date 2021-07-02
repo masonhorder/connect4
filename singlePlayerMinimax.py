@@ -127,10 +127,10 @@ def evaluateSection(section):
   score = 0
 
   if section.count(2) == 4: # bot winning
-    score += 10000
+    score += 40
 
-  elif section.count(1) == 3 and section.count(0) == 1: # human being set up to win
-    score -= 20
+  elif section.count(1) == 3 and section.count(0) == 1: 
+    score -= 30
 
   elif section.count(2) == 3 and section.count(0) == 1:
     score += 8
@@ -268,7 +268,7 @@ def minimax(inputBoard, player, depth, alpha, beta):
       return [None, None, 0]
     elif getGameStatus(inputBoard) == 2:
       return [None, None, 10000000000000]
-    elif getGameStatus(inputBoard) == 2:
+    elif getGameStatus(inputBoard) == 1:
       return [None, None, -10000000000000]
   
   if depth == 0:
@@ -351,7 +351,7 @@ def makeMove(player, message):
     # getDepth(board)
     row = move[0]
     column = move[1]
-    message = "Bot went in column " + str(column)
+    message = "Bot went in column " + str(column+1)
 
 
   board[row][column] = player
