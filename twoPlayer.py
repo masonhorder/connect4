@@ -2,9 +2,22 @@ import os
 
 board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],]
 
+# print out the connect 4 board in a nice style
 def printBoard():
+  print("")
+  print("   1 2 3 4 5 6 7")
   for row in board:
-    print(row)
+    rowString = " \033[93m| "
+    for spot in row:
+      if spot == 0:
+        rowString += "\033[90mO "
+      elif spot == 1:
+        rowString += "\033[91m* "
+      elif spot == 2:
+        rowString += "\033[94m* "
+    rowString += "\033[93m| "
+    print(rowString)
+  print("\033[93m-------------------\033[0m")
 
 def getGameStatus():
   gameStatus = 0 # 0 = active game; 1 = player 1 wins; 2 = player 2 wins; 3 = tie game

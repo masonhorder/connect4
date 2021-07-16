@@ -1,2 +1,18 @@
 [4, 3, 5, 3, 6, 7]
 [4, 5, 6, 5, 4, 3, 7, 6, 4, 5]
+
+
+
+Traceback (most recent call last):
+  File "/Users/masonhorder/Projects/connect 4/singlePlayerMinimax.py", line 361, in <module>
+    makeMove(1, "\033[93mWelcome to connect four, single player edition\033[0m")
+  File "/Users/masonhorder/Projects/connect 4/singlePlayerMinimax.py", line 358, in makeMove
+    makeMove(nextPlayer(player), message)
+  File "/Users/masonhorder/Projects/connect 4/singlePlayerMinimax.py", line 358, in makeMove
+    makeMove(nextPlayer(player), message)
+  File "/Users/masonhorder/Projects/connect 4/singlePlayerMinimax.py", line 358, in makeMove
+    makeMove(nextPlayer(player), message)
+  [Previous line repeated 25 more times]
+  File "/Users/masonhorder/Projects/connect 4/singlePlayerMinimax.py", line 357, in makeMove
+    board[row][column] = player
+TypeError: list indices must be integers or slices, not NoneType
